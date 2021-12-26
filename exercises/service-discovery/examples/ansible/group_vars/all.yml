@@ -1,0 +1,6 @@
+pip_package: python3-pip
+pip_install_packages:
+  - name: docker
+# Описываем переменную в которой будет храниться IP адрес из предоставляемой VPC
+advertise_ip: "..."
+

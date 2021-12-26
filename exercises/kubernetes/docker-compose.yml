@@ -1,0 +1,13 @@
+version: "3"
+
+services:
+  app:
+    image: hexletcomponents/devops-example-app
+    container_name: app
+    restart: always
+    env_file: .env
+    ports:
+      - 80:5000
+    environment:
+      - SERVER_MESSAGE=$SERVER_MESSAGE
+      - ROLLBAR_TOKEN=$ROLLBAR_TOKEN

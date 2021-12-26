@@ -1,0 +1,32 @@
+---
+- hosts: all
+  gather_facts: yes
+  remote_user: root
+
+  tasks:
+    - name: Install packages for
+      ansible.builtin.apt:
+        name: python3-pip
+        update_cache: yes
+
+    - name: Install Docker Module for Python
+      ansible.builtin.pip:
+        name: docker
+
+    - name: Run container
+      community.docker.docker_container:
+        name: hexlet-app
+        image: hexletcomponents/devops-example-app
+        published_ports: 80:5000
+        restart_policy: always
+        restart: yes
+        container_default_behavior: no_defaults
+        pull: yes
+        env:
+          SERVER_MESSAGE: !vault |
+            $ANSIBLE_VAULT;1.1;AES256
+            38383339313737366337386333616262343337326639333230366431366561663739306464646664
+            3732393962336235613738623231383738663236393038620a616532366463663636343561333933
+            36386535386261353961336366383366373136333664636337616263353732336566306638393165
+            6239333662303763330a663463353964336334623661326437366234623466623135633265363362
+            66393839363661323938653134616562643339356639383764633337636134616531

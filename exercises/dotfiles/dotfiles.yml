@@ -1,0 +1,30 @@
+---
+
+- hosts: all
+  tasks:
+    - name: Ping
+      ping:
+    - name: Prepare .zshrc
+      file:
+        path: /runner/project/{{item}}
+        state: touch
+      loop:
+        - .zshrc
+        - .gitconfig
+    - name: Activate asdf completions
+      lineinfile:
+        path: /runner/project/.zshrc
+        line: '. $HOME/.asdf/asdf.sh'
+    - name: Activate zsh plugins
+      lineinfile:
+        path: /runner/project/.zshrc
+        regexp: '^plugins='
+        line: 'plugins=(git docker)'
+    - name: Git log prerry
+      blockinfile:
+        path: /runner/project/.gitconfig
+        block: |
+          [pretty]
+              my = format:%C(yellow)%h%C(reset) | %C(dim green)%cd%C(reset) | %C(green)%cr%C(reset) | %C(cyan)%s%C(red)%d%C(red)%C(reset) %C(blue)[%an]%C(reset)
+          [format]
+              pretty = my

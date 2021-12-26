@@ -1,0 +1,121 @@
+
+    <!DOCTYPE html>
+    <html>
+      <body>
+        <style>@page {
+  size: 1280px 720px;
+  margin: 0;
+}@media print {html, body {
+  background-color: #fff;
+  margin: 0;
+  page-break-inside: avoid;
+  break-inside: avoid-page;
+}
+  div.marpit > section {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  div.marpit > section, div.marpit > section * {
+    -webkit-print-color-adjust: exact !important;
+    animation-delay: 0s !important;
+    animation-duration: 0s !important;
+    color-adjust: exact !important;
+    transition: none !important;
+  }
+
+  div.marpit > svg[data-marpit-svg] {
+    display: block;
+    height: 100vh;
+    width: 100vw;
+  }
+}
+
+div.marpit > section {
+  width: 1280px;
+  height: 720px;
+
+  box-sizing: border-box;
+  overflow: hidden;
+  position: relative;
+
+  scroll-snap-align: center center;
+}
+
+div.marpit > section::after {
+  bottom: 0;
+  content: attr(data-marpit-pagination);
+  padding: inherit;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+}
+
+div.marpit > section:not([data-marpit-pagination])::after {
+  display: none;
+}
+
+/* Normalization */
+div.marpit > section h1 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+div.marpit > section video::-webkit-media-controls {
+  will-change: transform;
+}</style>
+        <div class="marpit"><section id="1" data-marpit-fragments="11">
+<h1>Ansible</h1>
+<p>Настроим Vagrant-окружение c помощью <a href="https://www.vagrantup.com/docs/provisioning/ansible">Ansible Provisioning</a> и запустим внутри него Fastify-проект.</p>
+<h2>Ссылки</h2>
+<ul>
+<li data-marpit-fragment="1"><a href="https://docs.ansible.com/ansible/latest/index.html">Ansible Documentation</a></li>
+<li data-marpit-fragment="2"><a href="https://www.vagrantup.com/docs/networking/forwarded_ports">Vagrant: Проброс портов</a></li>
+<li data-marpit-fragment="3"><a href="https://github.com/hexlet-boilerplates/vagrant-ansible">Интеграция Ansible с Vagrant</a></li>
+</ul>
+<h2>Задачи</h2>
+<ul>
+<li data-marpit-fragment="4">
+<p><a href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html">Установите Ansible</a></p>
+</li>
+<li data-marpit-fragment="5">
+<p>Инициализируйте Vagrant-проект</p>
+<pre><code class="language-sh">vagrant init ubuntu/focal64
+</code></pre>
+</li>
+<li data-marpit-fragment="6">
+<p>Создайте директорию <em>provisioning</em> и файл <em>playbook.yml</em>, который будет использовать Ansible</p>
+</li>
+<li data-marpit-fragment="7">
+<p>Ansible: Добавьте репозиторий <a href="https://github.com/nodesource/distributions#installation-instructions">Node.js</a> с помощью <a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/script_module.html">shell-скрипта</a> командой:</p>
+<pre><code class="language-sh">curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+</code></pre>
+</li>
+<li data-marpit-fragment="8">
+<p>Ansible: Установите пакет <em>nodejs</em> с помощью <a href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/apt_module.html">apt</a></p>
+</li>
+<li data-marpit-fragment="9">
+<p>Ansible: Добавьте установку зависимостей для Fastify-проекта с помощью команды <em>npm install</em>. Эту команду нужно выполнять в директории <em>/vagrant</em> и только <a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_conditionals.html">при условии</a>, что существует файл <em>package.json</em>.</p>
+</li>
+<li data-marpit-fragment="10">
+<p>В <em>Vagrantfile</em> пробросьте изнутри виртуальной машины наружу 3000 порт. На нем запустится Fastify</p>
+</li>
+<li data-marpit-fragment="11">
+<p>Инициализируйте Fastify-проект и убедитесь что он работает</p>
+<pre><code class="language-sh">vagrant ssh
+cd /vagrant
+npm init -y fastify
+npm install
+FASTIFY_ADDRESS=0.0.0.0 npm run dev
+# открываем в браузере http://localhost:3000 и проверяем что все работает
+</code></pre>
+</li>
+</ul>
+<p>Результатом домашней работы будет Fastify-проект, который запускается внутри виртуальной машины VirtualBox с помощью Vagrant и доступен снаружи по адресу http://localhost:3000. А также файл <em>playbook.yml</em>, в котором происходит добавление репозитория и установка необходимых пакетов.</p>
+<h2>Самостоятельная работа</h2>
+<p>Добавьте переменную <code>FASTIFY_ADDRESS</code> в <em>/etc/environment</em> с помощью Ansible. Тогда не придется ее указывать при запуске Fastify. Используйте для этого модуль <em>lineinfile</em>.</p>
+</section>
+</div>
+      </body>
+    </html>
+  

@@ -1,0 +1,9 @@
+- name: Setup Infrastructure
+  hosts: localhost
+  connection: local
+  vars:
+    terraform_dir: "{{ playbook_dir }}/../terraform"
+  # Пример использования своей роли
+  # Структура директорий роли описана здесь https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse_roles.html
+  roles:
+    - infrastructure

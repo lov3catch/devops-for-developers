@@ -1,0 +1,68 @@
+version: '3'
+services:
+  application:
+    container_name: hxlt_app
+    image: php:8-fpm-alpine
+    volumes:
+      - .:/var/www
+    restart: on-failure
+    expose:
+      - "9000"
+    depends_on:
+      - db
+    networks:
+      - hxlt-tier
+  app-cli:
+    container_name: hxlt_app_cli
+    image: php:8-cli
+    volumes:
+      - .:/var/www
+    restart: on-failure
+    tty: true
+    depends_on:
+      - db
+    networks:
+      - hxlt-tier
+  nginx:
+    container_name: hxlt_nginx
+    image: nginx
+    ports:
+      - "127.0.0.1:8000:80"
+    depends_on:
+      - application
+    volumes:
+      - .:/var/www
+      - ./etc/infrastructure/nginx/nginx.conf:/etc/nginx/conf.d/example.com.conf
+    networks:
+      - hxlt-tier
+  db:
+    container_name: hxlt_db
+    image: postgres:12-alpine
+    restart: always
+    volumes:
+      - ./etc/infrastructure/mongo:/data/db
+    expose:
+      - 5432
+    environment:
+      POSTGRES_PASSWORD: example
+    networks:
+      - hxlt-tier
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - 8080:8080
+    networks:
+      - hxlt-tier
+  composer:
+    container_name: hxlt-composer
+    image: composer
+    volumes:
+      - .:/app
+    working_dir: /app/app
+    command: sh -c "composer install"
+networks:
+  hxlt-tier:
+    driver: bridge

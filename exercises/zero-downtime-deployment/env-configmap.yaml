@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  SERVER_MESSAGE: Hello from Kubernetes!!
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app-env
+  name: env

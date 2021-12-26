@@ -1,0 +1,19 @@
+---
+  - name: Setting up monitoring server
+    hosts: monitoring
+    gather_facts: yes
+    remote_user: root
+    roles:
+      - { role: datadog.datadog, become: yes }
+    vars:
+      datadog_api_key: "{{api_key}}"
+      datadog_site: "datadoghq.com"
+      datadog_checks:
+        http_check:
+          init_config:
+          instances:
+            - name: K8S app status
+              url: http://45.55.104.104
+              timeout: 5
+              method: GET
+              http_response_status_code: 200

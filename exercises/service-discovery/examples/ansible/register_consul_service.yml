@@ -1,0 +1,32 @@
+- name: Run Consul client container with service
+  hosts: consul_clients
+  tasks:
+    - include_tasks: common/register_consul_server_ip.yml
+
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: files/devops.json
+        dest: /tmp/devops.json
+
+    - name: Run Consul container
+      community.docker.docker_container:
+        name: consul-client
+        image: consul
+        recreate: yes
+        network_mode: host
+        volumes:
+          - /tmp/devops.json:/consul/config/devops.json
+        container_default_behavior: no_defaults
+        command: "agent -node=client-1 -join={{ consul_server_ip }} -advertise={{ advertise_ip }}"
+
+    - name: Run app container
+      community.docker.docker_container:
+        name: hexlet-app
+        image: hexlet/hexlet-app
+        published_ports: 5000:5000
+        restart_policy: always
+        restart: yes
+        pull: yes
+        container_default_behavior: no_defaults
+        env:
+          SERVER_MESSAGE: "Hello!"

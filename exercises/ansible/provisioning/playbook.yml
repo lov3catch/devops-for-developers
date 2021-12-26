@@ -1,0 +1,38 @@
+---
+
+- hosts: all
+  tasks:
+    - name: Ping
+      ping:
+
+    - name: Add nodejs repo
+      shell:
+        cmd: curl -sL https://deb.nodesource.com/setup_16.x | sudo -E bash -
+
+    - name: Install nodejs
+      apt:
+        update_cache: true
+        name: nodejs
+        state: present
+      become: yes
+
+    - name: Check package.json exists
+      stat:
+        path: /vagrant/package.json
+      register: p
+
+    - name: Debug package.json
+      debug:
+        var: p
+
+    - name: Install Fastify
+      shell:
+        chdir: /vagrant
+        cmd: npm install
+      when: p.stat.exists == true
+
+    - name: Add Fastify address
+      lineinfile:
+        path: /etc/environment
+        line: FASTIFY_ADDRESS=0.0.0.0
+      become: true

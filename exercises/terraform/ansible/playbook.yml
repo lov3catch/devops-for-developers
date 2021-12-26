@@ -1,0 +1,26 @@
+---
+
+- hosts: all
+  gather_facts: yes
+
+  tasks:
+    - name: Install packages
+      ansible.builtin.apt:
+        name: python3-pip
+        update_cache: yes
+
+    - name: Install Docker Module for Python
+      ansible.builtin.pip:
+        name: docker
+
+    - name: Run container
+      community.docker.docker_container:
+        name: hexlet-app
+        image: hexletcomponents/devops-example-app
+        published_ports: 80:5000
+        restart_policy: always
+        restart: yes
+        container_default_behavior: no_defaults
+        pull: yes
+        env:
+          SERVER_MESSAGE: "{{ansible_default_ipv4.address}}"

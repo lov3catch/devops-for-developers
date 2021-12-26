@@ -1,0 +1,22 @@
+- name: Apply terraform infrastructure (webservers, loadbalancer, domain)
+  community.general.terraform:
+    project_path: "{{ terraform_dir }}"
+    variables:
+      do_token: "{{ do_token }}"
+      pvt_key: "{{ pvt_key }}"
+    force_init: yes
+    state: "{{ infra_state }}"
+  # Используются outputs из terraform для получения данных о серверах (ip-адреса)
+  register: infra
+
+- name: Generate hosts
+  template:
+    src: templates/hosts.j2
+    dest: hosts
+  when: infra_state == "present"
+
+- name: Generate ssh_config
+  template:
+    src: templates/ssh_config.j2
+    dest: ../ssh_config
+  when: infra_state == "present"

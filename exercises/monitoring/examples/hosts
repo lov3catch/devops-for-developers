@@ -1,0 +1,5 @@
+; определяем один хост с именем webserver
+[webservers]
+; указываем список хостов
+web1 ansible_host=204.189.100.169 ansible_user=root
+web2 ansible_host=234.189.100.185 ansible_user=root

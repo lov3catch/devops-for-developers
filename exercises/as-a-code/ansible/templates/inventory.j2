@@ -1,0 +1,4 @@
+[digital-ocean]
+{% for machine in machines.results %}
+{{ machine.data.droplet.name }} ansible_host={{ machine.data.ip_address }} ansible_user=root
+{% endfor %}

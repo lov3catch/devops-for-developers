@@ -1,0 +1,34 @@
+---
+
+- hosts: all
+  roles:
+    - role: geerlingguy.git
+      become: true
+    - role: geerlingguy.php
+      php_enable_webserver: false
+      become: true
+    - role: geerlingguy.composer
+      become: true
+  tasks:
+    - name: Ping
+      ping:
+
+    - name: Install PHP deps
+      apt:
+        name:
+          - php7.4-zip
+          - php7.4-xml
+        update_cache: yes
+        state: present
+      become: yes
+
+    - name: Configure GIT
+      shell: |
+        git config --global user.email "lov3catch@gmail.com"
+        git config --global user.name "Ihor Kpl"
+
+    - name: Create project
+      shell:
+        cmd: composer create-project symfony/skeleton my_project_name
+        chdir: /vagrant
+        creates: /vagrant/my_project_name/public/index.php

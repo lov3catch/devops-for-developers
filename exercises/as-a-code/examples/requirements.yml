@@ -1,0 +1,4 @@
+roles: []
+# Коллекция для работы с DO
+collections:
+  - community.digitalocean

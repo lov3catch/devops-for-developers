@@ -1,0 +1,45 @@
+
+- name: Create Digital Ocean droplets
+
+  # Запросы на создание выполняются на локальной машине и стучатся в API Digital ocean
+  hosts: localhost
+  connection: local
+  # Не используем факты с рабочей машины, поэтому отключаем
+  gather_facts: no
+  tasks:
+    - name: Register DO ssh key
+      # Регистрируем список ключей
+      register: do_ssh_key
+      community.digitalocean.digital_ocean_sshkey_info:
+        # Все обращения к DO через модуль выполняются с использованием токена
+        # Другой вариант - задавать переменную окружения DO_API_TOKEN
+        oauth_token: "{{ do_oauth_token }}"
+
+    - name: Create a new droplets
+      community.digitalocean.digital_ocean_droplet:
+        state: active
+        wait: yes
+        unique_name: yes
+        wait_timeout: 120
+        name: "example-droplet"
+        oauth_token: "{{ do_oauth_token }}"
+        # https://slugs.do-api.dev/
+        size: "s-1vcpu-1gb"
+        region: "ams3"
+        image: "docker-20-04"
+        # Добавляем в дроплет ключи, это может быть один ключ или несколько. Для добавления нужны их ID
+        ssh_keys:
+          - "{{ do_ssh_key.data.0.id }}"
+      # Если нам нужно нужно создать отдельные дроплеты, то используем цикл
+      # with_items: "{{ droplets_params | list }}"
+
+    - name: Create example from loop template
+      # Файл будет искаться в tempplates
+      # Переменные внутри файла будут браться из объявленных, либо можно объявить свои переменные через vars
+      # vars:
+      #   my_list:
+      #     - name: abc
+      #       description: example
+      template:
+        src: example.j2
+        dest: example.txt

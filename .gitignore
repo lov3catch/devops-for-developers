@@ -1,0 +1,10 @@
+exercises/*/.cache
+.DS_Store
+.idea
+exercises/terraform/.terraform
+exercises/app/terraform/.terraform
+exercises/vagrant/.vagrant
+exercises/vagrant/node_modules
+exercises/12-factors/app/.cache
+exercises/12-factors/app/.tmp
+exercises/12-factors/app/build

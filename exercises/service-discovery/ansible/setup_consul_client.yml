@@ -1,0 +1,13 @@
+- name: Run Consul client container
+  hosts: consul_clients
+  tasks:
+    - include_tasks: common/register_consul_server_ip.yml
+
+    - name: Run Consul container
+      community.docker.docker_container:
+        name: consul-client
+        image: consul
+        recreate: yes
+        network_mode: host
+        container_default_behavior: no_defaults
+        command: "agent -node=client-1 -join={{ consul_server_ip }} -advertise={{ advertise_ip }}"

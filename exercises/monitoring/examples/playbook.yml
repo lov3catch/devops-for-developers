@@ -1,0 +1,61 @@
+---
+# плейбук состоит из списка плеев объектов в которых описаны хосты, задачи и тд
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_intro.html
+- hosts: all # Хосты для которых выполняется ansible
+  remote_user: root
+  # Задаём переменные окружения
+  vars:
+    # Переменная datadog_api_key зашифрована с помощью Ansible Vault
+    # https://docs.ansible.com/ansible/latest/user_guide/vault.html
+    datadog_api_key: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          36306462306166623932306230663334336562623061383533363634383431373063666239616564
+          3866383737376430396565393961333134353938343535390a616635353638633232306334346134
+          64663263663334653565303762323137646665643931663330373731303435393238626430316361
+          6434396639333238350a333965633639346631633532313961303563373263653162333738333332
+          66316137383034393133393134326363626230633166663864323038383436613734376561373164
+          6339316335613235636637396563306465623138323331393137
+    # регистрироваться и получать api_key нужно на datadoghq.com.
+    # datadoghq.eu - содержит свои, другие апикеи
+    datadog_site: "datadoghq.com"
+    datadog_checks:
+      http_check:
+        init_config:
+        instances:
+          - name: Application health check status
+            url: http://localhost:5000
+            timeout: 5
+            method: GET
+
+  tasks:
+    - name: Install packages for
+      ansible.builtin.apt:
+        name: python3-pip
+        update_cache: yes
+
+    - name: Install Docker Module for Python
+      ansible.builtin.pip:
+        name: docker
+
+    - name: Run container
+      # Используем модуль community.docker.docker_container
+      community.docker.docker_container:
+        name: hexlet-app # Имя контейнера
+        image: hexlet/hexlet-app # Имя используемого образа
+        # Публикуемые порты. Слева порт внутри контейнера,
+        # справа порт по которому он будет доступен снаружи
+        published_ports: 80:8080
+        restart_policy: always
+        restart: yes
+        container_default_behavior: no_defaults
+        pull: yes
+        # Задаём переменные окружения
+        env:
+          # Тут должна быть переменная из сбора фактов
+          # которая выводит IP-адрес текущего сервера
+          SERVER_MESSAGE: '...'
+
+    - name: Install and run Datadog agent
+      # Загружаем и выполняем роль
+      ansible.builtin.include_role:
+        name: datadog.datadog

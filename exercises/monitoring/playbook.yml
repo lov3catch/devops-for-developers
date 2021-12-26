@@ -1,0 +1,45 @@
+---
+
+- hosts: all
+  gather_facts: yes
+  remote_user: root
+  roles:
+    - { role: datadog.datadog, become: yes }
+  vars:
+    datadog_api_key: "{{ api_key }}"
+
+    datadog_site: "datadoghq.eu"
+    datadog_checks:
+      http_check:
+        init_config:
+        instances:
+          - name: Application health check status
+            url: http://143.198.176.66
+            timeout: 5
+            method: GET
+          - name: Application health check status
+            url: http://142.93.205.52
+            timeout: 5
+            method: GET
+  tasks:
+    - name: Install packages for
+      ansible.builtin.apt:
+        name: python3-pip
+        update_cache: yes
+
+    - name: Install Docker Module for Python
+      ansible.builtin.pip:
+        name: docker
+
+    - name: Run container
+      community.docker.docker_container:
+        name: devops-example-app
+        image: hexletcomponents/devops-example-app
+        published_ports: 80:5000
+        restart_policy: always
+        recreate: yes
+        restart: yes
+        container_default_behavior: no_defaults
+        pull: yes
+        env:
+          SERVER_MESSAGE: '{{ ansible_default_ipv4.address }}'

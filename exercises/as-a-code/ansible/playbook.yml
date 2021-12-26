@@ -1,0 +1,37 @@
+---
+- name: Create a new droplet
+  hosts: localhost
+
+  tasks:
+    - name: Gather information about DO SSH keys
+      community.digitalocean.digital_ocean_sshkey_info:
+        oauth_token: "{{ VAULT_OAUTH_TOKEN }}"
+      register: ssh_keys
+
+    - name: Run
+      community.digitalocean.digital_ocean_droplet:
+        state: active
+        name: "as-a-code-homework-0{{ item }}"
+        oauth_token: "{{ VAULT_OAUTH_TOKEN }}"
+        size: s-1vcpu-1gb
+        region: ams3
+        image: docker-20-04
+        wait_timeout: 500
+        unique_name: yes
+        ssh_keys: ["{{ ssh_keys.data.0.id }}"]
+      loop: "{{ range(0, 2) }}"
+      register: machines
+
+#    - debug:
+#        msg: "{{ machines }}"
+
+    - name: Prepare inventory file
+      template:
+        src: templates/inventory.j2
+        dest: inventory.ini
+
+
+#    - name: Print SSH public key
+#      debug:
+#        msg: "{{ ssh_keys.data.0.id }}"
+

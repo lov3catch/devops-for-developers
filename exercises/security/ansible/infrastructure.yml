@@ -1,0 +1,27 @@
+---
+- name: Create infrastructure
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Debug
+      debug:
+        msg: "{{ do_token }}"
+
+    - name: Build infrastructure
+      community.general.terraform:
+        project_path: ./../terraform
+        force_init: true
+        variables:
+          do_token: "{{ do_token }}"
+      register: infrastructure
+    
+    - name: Render inventory.ini
+      template:
+        src: inventory.j2
+        dest: inventory.ini
+    
+    - name: Render SSH config (deploy throw bastion)
+      template:
+        src: ssh_config.j2
+        dest: ssh_config

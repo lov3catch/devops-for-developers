@@ -1,0 +1,80 @@
+---
+- name: Create infrastructure
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Debug
+      debug:
+        msg: "{{ do_token }}"
+
+    - name: Build infrastructure
+      community.general.terraform:
+        project_path: ./terraform
+        force_init: true
+        variables:
+          do_token: "{{ do_token }}"
+      register: infrastructure
+    
+    - name: Render inventory.ini
+      template:
+        src: inventory.j2
+        dest: inventory.ini
+#
+#- name: Update cache
+#  hosts: webservers
+#  tasks:
+#    - name: Update cache
+#      apt:
+#        update_cache: yes
+#    
+#    - name: Debug
+#      debug:
+#        msg: Update cache run
+#
+#- name: Install docker
+#  hosts: webservers
+#
+#  vars:
+#    pip_install_packages:
+#      - name: docker
+#
+#  roles:
+#    - geerlingguy.pip
+#    - geerlingguy.docker
+#
+#- name: Create group for docker user
+#  hosts: webservers
+#  tasks:
+#    - name: Create group
+#      ansible.builtin.group:
+#        name: docker
+#        state: present
+#        gid: 1750
+#
+#    - name: Create user for docker
+#      ansible.builtin.user:
+#        name: docker
+#        shell: /bin/sh
+#        groups: docker
+#
+#    - name: Docker login
+#      community.docker.docker_login:
+#        username: lov3catch
+#        password: onlinePWNZ777
+#
+#- name: Run container
+#  hosts: webservers
+#  become_user: docker
+#  tasks:
+#    - name:
+#      community.docker.docker_container:
+#        name: hexlet-app
+#        image: lov3catch/devops
+#        published_ports: 80:5000
+#        restart_policy: always
+#        restart: yes
+#        container_default_behavior: no_defaults
+#        pull: yes
+#        env:
+#          SERVER_MESSAGE: "{{ansible_default_ipv4.address}}"

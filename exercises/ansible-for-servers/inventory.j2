@@ -1,0 +1,4 @@
+[webservers]
+{% for droplet_ip in infrastructure.outputs.droplet_ips.value %}
+{{ droplet_ip }} ansible_user=root
+{% endfor %}

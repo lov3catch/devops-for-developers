@@ -1,0 +1,14 @@
+- name: Setup servers
+  hosts: all
+  tasks:
+    - name: Update cache
+      apt:
+        update_cache: yes
+
+    - name: install pip
+      include_role:
+        name: geerlingguy.pip
+
+    - name: Disable UFW
+      community.general.ufw:
+        state: disabled

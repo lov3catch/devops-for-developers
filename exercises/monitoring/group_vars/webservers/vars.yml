@@ -1,0 +1,5 @@
+# NOTE: регистрироваться и получать api_key нужно на datadoghq.com.
+# datadoghq.eu - содержит свои, другие ключи
+# BEGIN
+api_key: "{{vault_api_key}}"
+# END

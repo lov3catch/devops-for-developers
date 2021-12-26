@@ -1,0 +1,11 @@
+- name: Run consul server
+  hosts: consul_servers
+  tasks:
+    - name: Run Consul server
+      community.docker.docker_container:
+        name: consul-server
+        recreate: yes
+        image: consul:latest
+        network_mode: host
+        container_default_behavior: no_defaults
+        command: "agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 -advertise={{ advertise_ip }}"

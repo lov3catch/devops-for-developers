@@ -1,0 +1,13 @@
+
+- name: Gather facts from consul_server
+  ansible.builtin.setup:
+  delegate_to: "server1"
+  delegate_facts: true
+  register: consul_server_facts
+
+- set_fact:
+  # Регистрируем в переменную IP адрес в приватной подсети
+  consul_server_ip: "..."
+
+- debug:
+  var: consul_server_ip

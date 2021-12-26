@@ -1,0 +1,15 @@
+- name: Create terraform infrastructure (webservers, loadbalancer, domain)
+  community.general.terraform:
+    project_path: "{{ terraform_dir }}"
+    variables:
+      do_token: "{{ do_token }}"
+      pvt_key: "{{ pvt_key }}"
+    force_init: yes
+    state: present
+  # Используются outputs из terraform для получения данных о серверах (ip-адреса)
+  register: infra
+
+- name: Add hosts
+  template:
+    src: templates/hosts.j2
+    dest: hosts

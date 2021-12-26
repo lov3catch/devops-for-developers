@@ -1,0 +1,19 @@
+[30;43m                                                                                [39;49m
+[30;43m [WARNING] run "symfony server:ca:install" first if you want to run the web se  [39;49m
+[30;43m rver with TLS support, or use "--no-tls" to avoid this warning                 [39;49m
+[30;43m                                                                                [39;49m
+
+Tailing [32mWeb Server[39m log file (/home/vagrant/.symfony/log/1645300b04d0678d0d53075229712f4fbfb3fed6.log)
+[30;42m                                                                                [39;49m
+[30;42m [OK] Web server listening                                                      [39;49m
+[30;42m      ]8;;http://127.0.0.1:8000\http://127.0.0.1:8000]8;;\                                                     [39;49m
+[30;42m                                                                                [39;49m
+
+[[32mWeb Server [39m] Jul 15 06:00:39 |[30;43mWARN   [39;49m| [33mHTTP  [39m unable to detect the front controller, disabling the PHP server [37;41merror[39;49m="Passthru script \"/index.php\" does not exist under /vagrant/: stat /vagrant/index.php: no such file or directory"
+[[32mWeb Server [39m] Jul 15 06:00:50 |[30;43mWARN   [39;49m| [33mSERVER[39m GET  (404) ]8;;https://127.0.0.1:8004/\/]8;;\[39m [36mip[39m="10.0.2.2"
+[[32mWeb Server [39m] Jul 15 06:00:50 |[30;43mWARN   [39;49m| [33mSERVER[39m GET  (404) ]8;;https://127.0.0.1:8004/favicon.ico\/favicon.ico]8;;\[39m 
+[[32mWeb Server [39m] Jul 15 06:00:50 |[30;43mWARN   [39;49m| [33mSERVER[39m GET  (404) ]8;;https://127.0.0.1:8004/apple-touch-icon-precomposed.png\/apple-touch-icon-precomposed.png]8;;\[39m 
+[[32mWeb Server [39m] Jul 15 06:00:50 |[30;43mWARN   [39;49m| [33mSERVER[39m GET  (404) ]8;;https://127.0.0.1:8004/apple-touch-icon.png\/apple-touch-icon.png]8;;\[39m 
+[[32mWeb Server [39m] Jul 15 06:00:51 |[30;43mWARN   [39;49m| [33mSERVER[39m GET  (404) ]8;;https://127.0.0.1:8004/\/]8;;\[39m 
+[[32mWeb Server [39m] Jul 15 06:00:53 |[30;43mWARN   [39;49m| [33mSERVER[39m GET  (404) ]8;;https://127.0.0.1:8004/\/]8;;\[39m 
+[[32mWeb Server [39m] Jul 15 06:00:54 |[30;43mWARN   [39;49m| [33mSERVER[39m GET  (404) ]8;;https://127.0.0.1:8004/\/]8;;\[39m 

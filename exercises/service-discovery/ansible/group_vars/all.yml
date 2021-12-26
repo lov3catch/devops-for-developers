@@ -1,0 +1,6 @@
+pip_package: python3-pip
+pip_install_packages:
+  - name: docker
+# BEGIN
+advertise_ip: "{{ ansible_facts['eth1']['ipv4']['address'] }}"
+# END

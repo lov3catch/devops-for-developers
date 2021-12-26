@@ -1,0 +1,9 @@
+Host bastion
+    Hostname {{ infra.outputs.bastion.value.ipv4_address }}
+    User root
+{% for webserver in infra.outputs.webservers.value %}
+
+Host {{ webserver.ipv4_address_private }}
+    ProxyJump bastion
+    User root
+{% endfor %}

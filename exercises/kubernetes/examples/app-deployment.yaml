@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: app
+  name: app
+spec:
+  # Устанавливаем количество реплик
+  replicas: 5
+  selector:
+    matchLabels:
+      io.kompose.service: app
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: app
+    spec:
+      containers:
+      - env:
+        - name: ROLLBAR_TOKEN
+          valueFrom:
+            # Указываем, что данную переменную нужно брать из секретов
+            secretKeyRef:
+              key: ROLLBAR_TOKEN
+              name: app-secret
+        - name: SERVER_MESSAGE
+          valueFrom:
+            configMapKeyRef:
+              key: SERVER_MESSAGE
+              name: env
+        image: hexlet/hexlet-app
+        imagePullPolicy: ""
+        name: hexlet-app
+        ports:
+        - containerPort: 3000
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

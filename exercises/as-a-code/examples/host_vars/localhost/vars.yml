@@ -1,0 +1,11 @@
+config:
+  param1: value1
+  param2: value2
+  param3: value2
+my_list:
+  - name: value1
+    description: example description 1
+  - name: value2
+    description: example description 2
+# Шифрованная переменная находится в файле, ссылаемся на нее
+some_token: "{{ vault_some_token }}"

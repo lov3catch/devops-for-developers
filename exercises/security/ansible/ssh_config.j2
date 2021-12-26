@@ -1,0 +1,8 @@
+Host bastion
+    Hostname {{ infrastructure.outputs.bastion.value.ipv4_address }}
+    User root
+{% for droplet_ip in infrastructure.outputs.droplet_ips.value %}
+Host {{ droplet_ip }}
+    ProxyJump bastion
+    User root
+{% endfor %}

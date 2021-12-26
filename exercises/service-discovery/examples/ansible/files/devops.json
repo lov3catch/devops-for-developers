@@ -1,0 +1,7 @@
+{
+  "service": {
+    "name": "devops",
+    "tags": ["hexlet"],
+    "port": 5000
+  }
+}
