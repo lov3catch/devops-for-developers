@@ -1,5 +1,6 @@
 Hexlet. DevOps для разработчиков.
 ---
+![certificate.png](certificate.png)
 [Ссылка на курс](https://ru.hexlet.io/my/learning?ref=44181)
 
 ## Автоматизация окружения
